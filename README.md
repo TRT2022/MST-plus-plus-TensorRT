@@ -1,7 +1,7 @@
 ## MST++ TensorRT模型加速优化 :zap:
 ### MST++: Multi-stage Spectral-wise Transformer for Efficient Spectral Reconstruction for TensorRT 2022
 
-** :construction_worker: 美迪康AI Lab**
+:construction_worker: : ** 美迪康AI Lab**
 
 ### 0.日志
 
@@ -42,15 +42,26 @@
 
 MST是一个**对称的U型网络**
 
-![image-20220526094439497](./docs/image-20220526094439497.png)
+<div align=center>
+<img src="./docs/image-20220526094439497.png"/>
+</div>
+
+
 
 其基本组成单元为Mask-guided Self-Attention Block(**MSAB**), **MSAB**中最重要的结构是Mask-guided Spectral-wize Multi-head Self-Attention(**MS-MSA**)
 
-![image-20220526093617393](./docs/image-20220526093617393.png)
+
+<div align=center>
+<img src="./docs/image-20220526093617393.png"/>
+</div>
+
 
 如上图：**MSAB**包含2个Layer Norm(LN) ，1个MS-MSA和1个前向神经网络FFN！！！
 
-![image-20220526093800077](./docs/image-20220526093800077.png)
+<div align=center>
+<img src="./docs/image-20220526093800077.png"/>
+</div>
+
 
 如上图：最重要的**MS-MSA**结构可以拆解为2个部分，即Mask-guided Mechanism(MM)个Spectral-wize Multi-head Self-Attention(S-MSA)
 
@@ -64,7 +75,11 @@ MM: 为了获得保真度随空间位置变化的信息，将 mask 作为输入�
 
 MST++是MST的后续工作，其全称为Multi-stage Spectral-wize Transformer,顾名思义就是将MST中的MM去掉，然后改成首尾串联的多阶段网络，输入变成了RGB图像，输出还是HSI.
 
-![image-20220526095217415](./docs/MST++.png)
+
+<div align=center>
+<img src="./docs/MST++.png"/>
+</div>
+
 
 + MST++由N个SST级联得到
 + SST中由原来MST中的MSAB替换为SAB,SAB中将原来的MS-MSA替换为了S-MSA
@@ -72,8 +87,10 @@ MST++是MST的后续工作，其全称为Multi-stage Spectral-wize Transformer,�
 
 **综上两个网络结构的介绍，MST和MST++基本结构单元均依赖于self-Attention,其在K,Q，V矩阵的计算上有些许的不同，网络结构上每个block采用了类似于U-Net的U型结构。**
 
+<div align=center>
+<img src="./docs/compare_fig.png"/>
+</div>
 
-![image-20220526100055372](./docs/compare_fig.png)
 
 上图可以发现，MST,MST++在精度和性能上的均衡上表现SOTA,在图像重建领域是最应该被考虑的可以作为实际应用的方案。
 
