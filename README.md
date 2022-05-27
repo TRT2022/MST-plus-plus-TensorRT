@@ -1,7 +1,7 @@
 ## MST++ TensorRT模型加速优化 :zap:
 ### MST++: Multi-stage Spectral-wise Transformer for Efficient Spectral Reconstruction for TensorRT 2022
 
-:construction_worker: : ** 美迪康AI Lab**
+:construction_worker: : **美迪康AI Lab**
 
 ### 0.日志
 
