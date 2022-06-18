@@ -120,4 +120,4 @@ MST++是MST的后续工作，其全称为Multi-stage Spectral-wize Transformer,�
 
 ### 6.经验与体会
 
-+ TODO
+- [ ]  TODO
