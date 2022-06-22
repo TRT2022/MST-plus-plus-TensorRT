@@ -1,0 +1,17 @@
+opencv-python
+einops
+torchvision==0.9.0
+torch==1.8.0
+scipy
+h5py
+hdf5storage
+tqdm
+onnx==1.11.0
+onnx-simplifier==0.3.7
+torchsummary
+cuda-python
+matplotlib
+seaborn
+pandas
+onnxruntime-gpu==1.11.1
+
