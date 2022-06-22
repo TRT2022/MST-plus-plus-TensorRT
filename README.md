@@ -78,7 +78,7 @@
 + 在绝对和相对误差上，TensorRT API中因大维度的ReduceSum和Plugin的误差问题精度整体略低于ONNXParser方式;
 + FP32模式下的绝对误差:ONNXParser可控制在
 $10^{-6}$,TensorRT API控制在$10^{-5}$;
-+ FP16模式下的绝对误差:ONNXParser可控制在$10^{-3}$,TensorRT API控制在$10^{-2}$
++ FP16模式下的绝对误差:ONNXParser可控制在$10^{-3}$,TensorRT API控制在$10^{-2}$；
 + 相对误差有类似的结果;
 + 此外我们完成了INT8量化并分析了其速度和精度。
 
@@ -549,9 +549,9 @@ FP16模式下，在`batch size=1`的情况下，TensorRT ONNXParser的加速效�
 <img src="./docs/rel_error.png"/>
 </div>
 
-上图展示了几种推断框架的相对误差的均值，最大值和中位数的分布情况，我们发现FP32模式下，onnxruntime和TensorRT ONNXparser的相对误差基本在 $10^{-5}$，而TensorRT API的绝对误差基本维持在 $10^{-4}$，精度相比于ONNXParser稍低（我们将在本节最后给出具体原因）。FP16模式下有相似的结果，TensorRT ONNXparser绝对误差维持在 $10^{-2}$,而TensorRT API的绝对误差维持在 $10^{-1}$，精度稍低（我们将在本节最后给出具体原因）。
+上图展示了几种推断框架的相对误差的均值，最大值和中位数的分布情况，我们发现FP32模式下，onnxruntime和TensorRT ONNXparser的相对误差基本在 $10^{-5}$，而TensorRT API的相对误差基本维持在 $10^{-4}$，精度相比于ONNXParser稍低（我们将在本节最后给出具体原因）。FP16模式下有相似的结果，TensorRT ONNXparser相对误差维持在 $10^{-2}$,而TensorRT API的相对误差维持在 $10^{-1}$，精度稍低（我们将在本节最后给出具体原因）。
 
-综上我们计算对比了不同框架下的绝对误差和相对误差的均值，中位数和最大值，并发现TensorRT API的方式在相对误差和绝度误差的精度上均比ONNXparser的方式稍低。我们依此分析了产生该结果的原因，我们获取了MST++的子图，基于该子图进行TensorRT ONNXParser和TensorRT API方式的搭建，我们找打了产生该结果的原因。之所以TensorRT API整体误差稍大，我们在代码层面上找到了具体原因，其原因如下：
+综上我们计算对比了不同框架下的绝对误差和相对误差的均值，中位数和最大值，并发现TensorRT API的方式在相对误差和绝度误差的精度上均比ONNXparser的方式稍低。我们依此分析了产生该结果的原因，我们通过TensorRT的工具`onnx graphsurgeon`获取了MST++的子图（该过程代码仓库未体现），基于该子图进行TensorRT ONNXParser和TensorRT API方式的搭建，我们找到了产生该结果的原因。之所以TensorRT API整体误差稍大，我们在代码层面上找到了具体原因，其原因如下：
 
 + TensorRT API实现的大维度的`ReduceSum`和ONNXParser是不同的，我们在对比结果的时候发现有偏差, TensorRT API的方式精度稍低，其具体代码位置在`mst_trt_api.py`中
 ```python
@@ -582,7 +582,7 @@ def torch_normalize(network,inputs,weights=None,name="L2Norm"):
 
 #### 4.3 关于INT8量化的精度和加速效果
 
-这里仅进行了TensorRT ONNXParser的INT8量化的精度和加速效果的计算，和FP32,FP16的参数设置保持一致，延迟相关的测试采用随机生成数据，且模拟次数是1050次其中前50次不作为统计数据;精度相关的计算采用真实的1000张测试数据，其中性能测试如下表所示：
+这里仅进行了TensorRT ONNXParser的INT8量化的精度和加速效果的计算，和FP32,FP16的参数设置保持一致，延迟相关的测试采用随机生成数据，且模拟次数是1050次其中前50次不作为统计数据; 精度相关的计算采用真实的1000张测试图像，其中性能测试如下表所示：
 
 <div align=center>
 <img src="./docs/int8_times.png"/>
@@ -594,7 +594,7 @@ def torch_normalize(network,inputs,weights=None,name="L2Norm"):
 <img src="./docs/int8_acc.png"/>
 </div>
 
-通过`polygraphy` debug INT8量化相关层的精度问题，我们首先定位模型的第一个`s_msa block`的的输出：
+通过TensorRT的分析工具`polygraphy` debug INT8量化相关层的精度问题，我们首先定位模型的第一个`s_msa block`的的输出：
 
 
 <div align=center>
@@ -638,7 +638,7 @@ ONNX和TensorRT的输出为：
 
 ### 6.未来工作
 
-基于TensorRT API和Plugin我们已经对MST++模型做了一定的优化，由于时间关系，未来希望持续进一步的优化，未来工作:
+基于TensorRT API和Plugin我们已经对MST++模型做了一定的优化，并提供了基于ONNXParser和TensorRT API的两条优化路径和基于PTQ的INT8量化，由于时间关系，未来希望持续进一步的优化，未来工作:
 
 - [ ] 目前我们实现的TensorRT API的方式暂不支持Dynamic shape,针对于目前实现可以容易修改为Dynamic shape，将在未来实现。
 - [ ] Gelu Plugin和LayerNorm Plugin的精度问题以及大维度（求和维度为249856维）的ReduceSum的精度问题导致目前的TensorRT API方式精度略低于ONNXParser方式，未来将进一步优化。
