@@ -168,7 +168,7 @@ apt-get update && apt-get install libgl1
 ├── performance_latency.py    # benchmark的计算和可视化
 ├── performance_accuracy.py   # 精度的计算和可视化
 ├── performance_int8.py # int8量化benchmark和精度的计算和可视化
-├── build.sh            # 完整运行本项目的全部命令，可以执行./build.sh运行(但是会很耗时！)
+├── build.sh            # 完整运行本项目的全部命令，可以执行./build.sh运行(但是会很耗时！约4个小时)
 |
 ├── requirements.txt    # Python package安装列表
 ├── LICENSE     
@@ -187,9 +187,9 @@ apt-get update && apt-get install libgl1
 + 1.Pytorch模型转ONNX
 
 ```shell
-python3 torch2onnx -h
+python3 torch2onnx.py -h
 # 为了测试可以生成任意batch_size：[1,2,4,8,16]（为了避免维度的复杂变换和额外结点，我们尽量避免使用Dynamic shape(个人认为能不用dynamic shape就不用！)
-python3 torch2onnx --batch_size=1 --onnx_path=./model/mst_plus_plus_b1.onnx --simplifier
+python3 torch2onnx.py --batch_size=1 --onnx_path=./model/mst_plus_plus_b1.onnx --simplifier
 ```
 
 + 2.TensorRT ONNXParser模型序列化
@@ -215,9 +215,9 @@ nsys profile -o mst_onnx trtexec --loadEngine=./model/mst_plus_plus_onnxparser_b
 
 ```shell
 # 获取模型weights用于TensorRT API搭建网络
-python3 get_weight.py -h
+python3 get_weights.py -h
 # 我们已经帮大家生成好了各batch size下的权重文件，该部分不需要执行
-#python3 get_weight.py --model_path=./model/mst_plus_plus_b1.onnx --weight_path=./model/mst_plus_plus_weights_b1.npz
+#python3 get_weights.py --model_path=./model/mst_plus_plus_b1.onnx --weight_path=./model/mst_plus_plus_weights_b1.npz
 
 # TensorRT API FP32
 python3 mst_trt_api.py -h
@@ -269,8 +269,9 @@ python3 mst_onnxparser.py --batch_size=1 --mode=INT8 --calibration_table_path=./
 python3 performance_int8.py
 ```
 
-> 下面涉及到的所有结果可以通过执行如下命令进行复现( 耗时较长！！！ )
+> 下面涉及到的所有结果可以通过执行如下命令进行复现( 耗时较长！！！约4个小时 )
 ```shell
+# 因过程中需要序列化不同batch下的engine,计算FP2,FP16不同batch下的精度和速度因此耗时较大
 chmod -R 777 ./build.sh
 ./build.sh
 ```
