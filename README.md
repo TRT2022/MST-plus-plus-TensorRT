@@ -632,7 +632,7 @@ ONNX和TensorRT的输出为：
 |:bug: BUG名称|issue|是否被官方确认|说明|
 |-|-|:-:|-|
 |SkipLayerNorm Plugin |<https://github.com/NVIDIA/TensorRT/issues/1919>|:white_check_mark:|官方暂未修复|
-| Normalize Plugin |<https://github.com/NVIDIA/TensorRT/issues/2020>|:white_check_mark:|官方暂未修复|
+| Normalize Plugin |<https://github.com/NVIDIA/TensorRT/issues/2020>|:white_check_mark:|官方已内部修复|
 
 </div>
 
