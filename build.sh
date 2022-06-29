@@ -1,10 +1,10 @@
 # 1.Pytorch模型转ONNX
 
-python3 torch2onnx --batch_size=1 --onnx_path=./model/mst_plus_plus_b1.onnx --simplifier
-python3 torch2onnx --batch_size=2 --onnx_path=./model/mst_plus_plus_b2.onnx --simplifier
-python3 torch2onnx --batch_size=4 --onnx_path=./model/mst_plus_plus_b4.onnx --simplifier
-python3 torch2onnx --batch_size=8 --onnx_path=./model/mst_plus_plus_b8.onnx --simplifier
-python3 torch2onnx --batch_size=16 --onnx_path=./model/mst_plus_plus_b16.onnx --simplifier
+python3 torch2onnx.py --batch_size=1 --onnx_path=./model/mst_plus_plus_b1.onnx --simplifier
+python3 torch2onnx.py --batch_size=2 --onnx_path=./model/mst_plus_plus_b2.onnx --simplifier
+python3 torch2onnx.py --batch_size=4 --onnx_path=./model/mst_plus_plus_b4.onnx --simplifier
+python3 torch2onnx.py --batch_size=8 --onnx_path=./model/mst_plus_plus_b8.onnx --simplifier
+python3 torch2onnx.py --batch_size=16 --onnx_path=./model/mst_plus_plus_b16.onnx --simplifier
 
 
 # 2.TensorRT ONNXParser模型序列化
