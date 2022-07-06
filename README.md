@@ -10,6 +10,7 @@
 [![](https://img.shields.io/badge/B%E7%AB%99-GodV%20TensorRT%E6%95%99%E7%A8%8B-blue)](https://www.bilibili.com/video/BV15Y4y1W73E?spm_id_from=333.337.search-card.all.click&vd_source=def8c63d9c5f9bf987870bf827bfcb3d)
 [![](https://img.shields.io/badge/B%E7%AB%99-GodV%20%E5%88%9D%E8%B5%9B%E6%80%BB%E7%BB%93-blue)](https://www.bilibili.com/video/BV1i3411G7vN?spm_id_from=333.999.0.0&vd_source=def8c63d9c5f9bf987870bf827bfcb3d)
 [![](https://img.shields.io/badge/Github-MST%2B%2B-blue)](https://github.com/caiyuanhao1998/MST-plus-plus)
+[![](https://img.shields.io/badge/TRT2022%E5%A4%8D%E8%B5%9B-%E4%B8%80%E7%AD%89%E5%A5%96-green)](https://github.com/NVIDIA/trt-samples-for-hackathon-cn/blob/master/hackathon/TRT-Hackathon-2022-summary.md#%E4%B8%80%E7%AD%89%E5%A5%96)
 ![visitors](https://visitor-badge.glitch.me/badge?page_id=TRT2022/MST-plus-plus-TensorRT)
 
 
